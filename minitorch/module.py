@@ -32,12 +32,20 @@ class Module:
     def train(self) -> None:
         """Set the mode of this module and all descendent modules to `train`."""
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        def _train(module: Module) -> None:
+            module.training = True
+            for child in module.modules():
+                _train(child)
+        _train(self)
 
     def eval(self) -> None:
         """Set the mode of this module and all descendent modules to `eval`."""
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        def _eval(module: Module) -> None:
+            module.training = False
+            for child in module.modules():
+                _eval(child)
+        _eval(self)
 
     def named_parameters(self) -> Sequence[Tuple[str, Parameter]]:
         """Collect all the parameters of this module and its descendents.
@@ -48,12 +56,22 @@ class Module:
 
         """
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        result = []
+        def _named_parameters(module: Module, prefix: str) -> None:
+            for name, param in module.__dict__["_parameters"].items():
+                result.append((prefix + name, param))
+            for name, child in module.__dict__["_modules"].items():
+                _named_parameters(child, prefix + name + ".")
+        _named_parameters(self, "")
+        return result
 
     def parameters(self) -> Sequence[Parameter]:
         """Enumerate over all the parameters of this module and its descendents."""
         # TODO: Implement for Task 0.4.
-        raise NotImplementedError("Need to implement for Task 0.4")
+        result = []
+        for name, param in self.named_parameters():
+            result.append(param)
+        return result
 
     def add_parameter(self, k: str, v: Any) -> Parameter:
         """Manually add a parameter. Useful helper for scalar parameters.
