@@ -84,17 +84,14 @@ def exp(x: float) -> float:
 
 def inv(x: float) -> float:
     """Returns the inverse of x."""
-    assert abs(x) > 1e-5, "Input is too close to zero for inv to be stable."
     return 1.0 / x
 
 def log_back(x: float, d: float) -> float:
     """Returns the backward pass of log."""
-    assert abs(x) > 1e-5, "Input is too close to zero for log_back to be stable."
     return d / x
 
 def inv_back(x: float, d: float) -> float:
     """Returns the backward pass of inv."""
-    assert abs(x) > 1e-5, "Input is too close to zero for inv_back to be stable."
     return -d / (x * x)
 
 def relu_back(x: float, d: float) -> float:
